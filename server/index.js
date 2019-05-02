@@ -25,6 +25,12 @@ app.post("/api/addgame", (req, res) => {
   res.send();
 });
 
+app.post("/api/addplayers", (req, res) => {
+  var players = req.body.players;
+  console.log("recevied player: " + players);
+  res.send();
+});
+
 app.get("/api/games", (req, res) => {
   res.send(games);
 });

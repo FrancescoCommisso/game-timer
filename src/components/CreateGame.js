@@ -9,6 +9,15 @@ class CreateGame extends Component {
       .then(state => this.setState(state));
   }
 
+  validateRes = status => {
+    if (status == 200) {
+      console.log("about to send");
+      this.props.onCreate(this.state.id);
+    } else {
+      console.log(status);
+    }
+  };
+
   createGame = () => {
     console.log("sending: " + JSON.stringify(this.state));
     fetch("/api/addgame", {
@@ -18,7 +27,7 @@ class CreateGame extends Component {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(this.state)
-    });
+    }).then(res => this.validateRes(res.status));
   };
 
   render() {
