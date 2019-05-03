@@ -1,34 +1,28 @@
 import React, { Component } from "react";
 
 class CreateGame extends Component {
-  state = {};
+  state = {
+    id: null
+  };
 
   componentDidMount() {
-    fetch("/api/creategame")
-      .then(response => response.json())
-      .then(state => this.setState(state));
+    this.setState({ id: this.generateID() });
   }
 
-  validateRes = status => {
-    if (status == 200) {
-      console.log("about to send");
-      this.props.onCreate(this.state.id);
-    } else {
-      console.log(status);
-    }
+  handleClick = () => {
+    this.props.onCreate(this.state.id);
   };
 
-  createGame = () => {
-    console.log("sending: " + JSON.stringify(this.state));
-    fetch("/api/addgame", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(this.state)
-    }).then(res => this.validateRes(res.status));
-  };
+  generateID() {
+    var result = "";
+    var characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    var charactersLength = characters.length;
+    for (var i = 0; i < 5; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  }
 
   render() {
     return (
@@ -38,7 +32,7 @@ class CreateGame extends Component {
         <h1>{this.state.id}</h1>
         <p>Others can use it to access this game session from their device!</p>
 
-        <button onClick={this.createGame}>Create</button>
+        <button onClick={this.handleClick}>Create</button>
       </div>
     );
   }

@@ -6,25 +6,9 @@ class AddSettings extends Component {
     autoStart: false
   };
 
-  validateRes = status => {
-    if (status === 200) {
-      this.props.onNext(this.state);
-    } else {
-      console.log("error: " + status);
-    }
-  };
-
   handleSubmit = e => {
     e.preventDefault();
-
-    fetch("/api/addsettings", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ id: this.props.gameID, settings: this.state })
-    }).then(res => this.validateRes(res.status));
+    this.props.onNext(this.state);
   };
 
   onTimeChange = e => {

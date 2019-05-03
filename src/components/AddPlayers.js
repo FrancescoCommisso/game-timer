@@ -8,15 +8,6 @@ class AddPlayers extends Component {
     p4: ""
   };
 
-  validateRes = (status, players) => {
-    if (status == 200) {
-      console.log("passing " + players + "to app");
-      this.props.onNext(players);
-    } else {
-      console.log("error: " + status);
-    }
-  };
-
   handleSubmit = e => {
     e.preventDefault();
     var players = [];
@@ -25,14 +16,7 @@ class AddPlayers extends Component {
     players.push(this.state.p3);
     players.push(this.state.p4);
 
-    fetch("/api/addplayers", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ players: players, id: this.props.gameID })
-    }).then(res => this.validateRes(res.status, players));
+    this.props.onNext(players);
   };
 
   handlep1change = e => {

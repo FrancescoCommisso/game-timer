@@ -10,27 +10,16 @@ app.use(pino);
 
 var games = {};
 
-app.get("/api/creategame", (req, res) => {
-  res.setHeader("Content-Type", "application/json");
-  var game = new Game();
-  res.send(JSON.stringify(game));
-});
+// app.get("/api/creategame", (req, res) => {
+//   res.setHeader("Content-Type", "application/json");
+//   res.send(new Game().generateID());
+// });
 
 app.post("/api/addgame", (req, res) => {
-  games[req.body.id] = req.body;
+  var g = new Game(req.body);
+  g.init();
+  games[g.id] = g;
   res.send();
-});
-
-app.post("/api/addplayers", (req, res) => {
-  games[req.body.id].players = req.body.players;
-
-  res.send();
-});
-
-app.post("/api/addsettings", (req, res) => {
-  games[req.body.id].settings = req.body.settings;
-  res.send();
-  console.log("game: " + JSON.stringify(games[req.body.id]));
 });
 
 app.get("/api/games", (req, res) => {
@@ -38,9 +27,12 @@ app.get("/api/games", (req, res) => {
 });
 
 app.post("/api/game", (req, res) => {
-  console.log("RECIEVED THIS: " + JSON.stringify(req.body.id));
-  console.log("SENDING THIS: " + JSON.stringify(games[req.body.id].gameState));
-  res.send(JSON.stringify(games[req.body.id].gameState));
+  res.send(JSON.stringify(games[req.body.id]));
+});
+
+app.post("/api/input/endturn", (req, res) => {
+  games[req.body.id].endTurn();
+  res.send(JSON.stringify(games[req.body.id]));
 });
 
 app.listen(3001, () =>

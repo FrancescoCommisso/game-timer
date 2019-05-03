@@ -3,13 +3,7 @@ import React, { Component } from "react";
 class Game extends Component {
   constructor() {
     super();
-    this.state = {
-      currentPlayer: "fucku "
-    };
   }
-  setTheState = object => {
-    console.log("RESOPNSE BODY: " + JSON.stringify(object));
-  };
 
   componentDidMount() {
     console.log(this.props.gameID);
@@ -25,17 +19,34 @@ class Game extends Component {
       .then(state => this.setState(state));
   }
 
+  handleClick = () => {
+    fetch("/api/input/endturn", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ id: this.props.gameID })
+    })
+      .then(response => response.json())
+      .then(state => this.setState(state));
+  };
+
   render() {
-    return (
-      <div>
-        <h1>{this.state.currentPlayer}'s Turn</h1>
-        <h2>Time Remaining: </h2>
-        <h4>Total Time: </h4>
-        <button>Pause</button>
-        <button>End Turn</button>
-        <button>Restart Turn</button>
-      </div>
-    );
+    if (this.state) {
+      return (
+        <div>
+          <h1>{this.state.gameState.currentPlayer}'s Turn</h1>
+          <h2>Time Remaining: {this.state.gameState.remainingTimeForTurn} </h2>
+          <h4>Total Time: {this.state.gameState.totalRuntime}</h4>
+          <h4>Turn#: {this.state.gameState.totalTurns}</h4>
+          <button>Pause</button>
+          <button onClick={this.handleClick}>End Turn</button>
+          <button>Restart Turn</button>
+          <button>Settings</button>
+        </div>
+      );
+    } else return <div>No state here </div>;
   }
 }
 

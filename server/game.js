@@ -1,28 +1,26 @@
 class Game {
-  constructor() {
-    this.id = this.generateID();
-    this.players = [];
+  constructor(obj) {
+    this.id = obj.id;
+    this.players = obj.players;
     this.gameState = {
       currentPlayer: null,
       remainingTimeForTurn: null,
       totalRuntime: 0,
       totalTurns: 0
     };
-    this.gameSettings = {
-      time: null,
-      autostart: false
-    };
-  }
+    this.gameSettings = obj.gameSettings;
 
-  generateID() {
-    var result = "";
-    var characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    var charactersLength = characters.length;
-    for (var i = 0; i < 5; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
+    this.init = function() {
+      this.gameState.currentPlayer = this.players[0];
+      this.gameState.remainingTimeForTurn = this.gameSettings.time;
+    };
+
+    this.endTurn = function() {
+      var current = this.players.indexOf(this.gameState.currentPlayer);
+      var next = (current + 1) % 4;
+      this.gameState.currentPlayer = this.players[next];
+      this.gameState.totalTurns += 1;
+    };
   }
 }
 
