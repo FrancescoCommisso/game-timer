@@ -31,9 +31,10 @@ class AddPlayers extends Component {
         Accept: "application/json",
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ players: players })
+      body: JSON.stringify({ players: players, id: this.props.gameID })
     }).then(res => this.validateRes(res.status, players));
   };
+
   handlep1change = e => {
     this.setState({ p1: e.target.value });
   };

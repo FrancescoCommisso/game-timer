@@ -4,6 +4,7 @@ import "./App.css";
 import CreateGame from "./components/CreateGame";
 import AddPlayers from "./components/AddPlayers";
 import AddSettings from "./components/AddSettings";
+import Game from "./components/Game";
 
 class App extends Component {
   constructor() {
@@ -24,28 +25,38 @@ class App extends Component {
     this.setState({ players: players });
   };
 
+  handleFinish = settings => {
+    this.setState({ settings: settings });
+  };
+
   render() {
     if (this.state.id === null) {
       return (
         <div>
-          <CreateGame onCreate={this.handleOnCreate} />
+          <CreateGame onCreate={this.handleOnCreate} gameID={this.state.id} />
         </div>
       );
     }
     if (this.state.players === null) {
       return (
         <div>
-          <AddPlayers onNext={this.handleNext} />
+          <AddPlayers onNext={this.handleNext} gameID={this.state.id} />
         </div>
       );
     }
     if (this.state.settings === null) {
       return (
         <div>
-          <AddSettings onNext={this.handleNext} />
+          <AddSettings onNext={this.handleFinish} gameID={this.state.id} />
         </div>
       );
     }
+
+    return (
+      <div>
+        <Game gameID={this.state.id} />
+      </div>
+    );
   }
 }
 export default App;

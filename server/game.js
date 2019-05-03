@@ -5,29 +5,13 @@ class Game {
     this.gameState = {
       currentPlayer: null,
       remainingTimeForTurn: null,
-      totalRuntime: null,
-      totalTurns: null
+      totalRuntime: 0,
+      totalTurns: 0
     };
-  }
-
-  setID(id) {
-    this.id = id;
-  }
-  getID() {
-    return this.id;
-  }
-
-  getPlayers() {
-    return this.players;
-  }
-  setPlayers(players) {
-    this.players = players;
-  }
-  getGameState() {
-    return this.gameState;
-  }
-  setGameState(gameState) {
-    this.gameState = gameState;
+    this.gameSettings = {
+      time: null,
+      autostart: false
+    };
   }
 
   generateID() {
