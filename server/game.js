@@ -5,7 +5,7 @@ class Game {
     this.gameState = {
       currentPlayer: null,
       remainingTimeForTurn: null,
-      totalRuntime: 0,
+      startTime: null,
       totalTurns: 0
     };
     this.gameSettings = obj.gameSettings;
@@ -13,6 +13,7 @@ class Game {
     this.init = function() {
       this.gameState.currentPlayer = this.players[0];
       this.gameState.remainingTimeForTurn = this.gameSettings.time;
+      this.gameState.startTime = Date.now();
     };
 
     this.endTurn = function() {
@@ -21,6 +22,18 @@ class Game {
       this.gameState.currentPlayer = this.players[next];
       this.gameState.totalTurns += 1;
     };
+
+    // this.pauseTurn() = function (){
+
+    // }
+
+    // this.restartTurn() = function(){
+
+    // }
+
+    // this.editSettings() = function(){
+
+    // }
   }
 }
 

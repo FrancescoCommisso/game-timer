@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+const pretty = require("pretty-ms");
 
 class Game extends Component {
   constructor() {
@@ -17,6 +18,15 @@ class Game extends Component {
     })
       .then(response => response.json())
       .then(state => this.setState(state));
+
+    this.interval = setInterval(() => {
+      var elapsed = Date.now() - this.state.gameState.startTime;
+      this.setState({ totalTime: pretty(elapsed) });
+    }, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   handleClick = () => {
@@ -36,17 +46,20 @@ class Game extends Component {
     if (this.state) {
       return (
         <div>
-          <h1>{this.state.gameState.currentPlayer}'s Turn</h1>
-          <h2>Time Remaining: {this.state.gameState.remainingTimeForTurn} </h2>
-          <h4>Total Time: {this.state.gameState.totalRuntime}</h4>
-          <h4>Turn#: {this.state.gameState.totalTurns}</h4>
+          <h1>{this.state.id}</h1>
+          <h2>{this.state.gameState.currentPlayer}'s Turn</h2>
+          <h3>Time Remaining: {this.state.gameState.remainingTimeForTurn} </h3>
+          <h5>Total Time: {this.state.totalTime}</h5>
+          <h5>Turn#: {this.state.gameState.totalTurns}</h5>
           <button>Pause</button>
           <button onClick={this.handleClick}>End Turn</button>
           <button>Restart Turn</button>
           <button>Settings</button>
         </div>
       );
-    } else return <div>No state here </div>;
+    } else {
+      return <div>shouldnt be seeing this</div>;
+    }
   }
 }
 
