@@ -7,7 +7,6 @@ class Game extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.gameID);
     fetch("/api/game", {
       method: "POST",
       headers: {
@@ -23,20 +22,18 @@ class Game extends Component {
 
   calcTotalTime = () => {
     this.interval = setInterval(() => {
-      var elapsed = Date.now() - this.state.gameState.startTime;
+      var elapsed = Date.now() - this.state.gameState.gameStartTime;
       this.setState({ totalTime: pretty(elapsed) });
+
+      this.getRemainingTime();
     }, 1000);
   };
-
-  //   calcRemainingTime = () => {
-
-  //   };
 
   componentWillUnmount() {
     clearInterval(this.interval);
   }
 
-  handleClick = () => {
+  handleEndTurn = () => {
     fetch("/api/input/endturn", {
       method: "POST",
       headers: {
@@ -49,18 +46,55 @@ class Game extends Component {
       .then(state => this.setState(state));
   };
 
+  getRemainingTime = () => {
+    fetch("/api/remainingtime", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ id: this.props.gameID })
+    })
+      .then(response => response.json())
+      .then(state => this.setState({ gameState: state }));
+  };
+
+  handlePause = () => {
+    fetch("/api/input/pause", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ id: this.props.gameID })
+    }).then(response => response.json());
+  };
+
+  handleRestart = () => {
+    fetch("/api/input/restart", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ id: this.props.gameID })
+    });
+  };
+
   render() {
     if (this.state) {
       return (
         <div>
           <h1>{this.state.id}</h1>
           <h2>{this.state.gameState.currentPlayer}'s Turn</h2>
-          <h3>Time Remaining: {this.state.gameState.remainingTimeForTurn} </h3>
+          <h3>
+            Time Remaining: {pretty(this.state.gameState.remainingTimeForTurn)}{" "}
+          </h3>
           <h5>Total Time: {this.state.totalTime}</h5>
           <h5>Turn#: {this.state.gameState.totalTurns}</h5>
-          <button>Pause</button>
-          <button onClick={this.handleClick}>End Turn</button>
-          <button>Restart Turn</button>
+          <button onClick={this.handlePause}>Pause</button>
+          <button onClick={this.handleEndTurn}>End Turn</button>
+          <button onClick={this.handleRestart}>Restart Turn</button>
           <button>Settings</button>
         </div>
       );

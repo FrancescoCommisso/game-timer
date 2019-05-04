@@ -8,19 +8,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({ extended: false }));
 app.use(pino);
 
-//production mode
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../build")));
-  //
-  app.get("*", (req, res) => {
-    res.sendfile(path.join((__dirname = "../build/index.html")));
-  });
-}
-//build mode
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname + "../public/index.html"));
-});
-
 var games = {};
 
 app.post("/api/addgame", (req, res) => {
@@ -28,6 +15,10 @@ app.post("/api/addgame", (req, res) => {
   g.init();
   games[g.id] = g;
   res.send();
+});
+
+app.post("/api/remainingtime", (req, res) => {
+  res.send(JSON.stringify(games[req.body.id].gameState));
 });
 
 app.get("/api/games", (req, res) => {
@@ -40,6 +31,14 @@ app.post("/api/game", (req, res) => {
 
 app.post("/api/input/endturn", (req, res) => {
   games[req.body.id].endTurn();
+  res.send(JSON.stringify(games[req.body.id]));
+});
+app.post("/api/input/pause", (req, res) => {
+  games[req.body.id].pauseTurn();
+  res.send(JSON.stringify(games[req.body.id]));
+});
+app.post("/api/input/restart", (req, res) => {
+  games[req.body.id].restartTurn();
   res.send(JSON.stringify(games[req.body.id]));
 });
 
