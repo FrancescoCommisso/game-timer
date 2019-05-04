@@ -8,15 +8,6 @@ class AddPlayers extends Component {
     p4: ""
   };
 
-  validateRes = (status, players) => {
-    if (status == 200) {
-      console.log("passing " + players + "to app");
-      this.props.onNext(players);
-    } else {
-      console.log("error: " + status);
-    }
-  };
-
   handleSubmit = e => {
     e.preventDefault();
     var players = [];
@@ -25,15 +16,9 @@ class AddPlayers extends Component {
     players.push(this.state.p3);
     players.push(this.state.p4);
 
-    fetch("/api/addplayers", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ players: players })
-    }).then(res => this.validateRes(res.status, players));
+    this.props.onNext(players);
   };
+
   handlep1change = e => {
     this.setState({ p1: e.target.value });
   };
@@ -53,16 +38,16 @@ class AddPlayers extends Component {
         <h2>Add Players</h2>
         <form onSubmit={this.handleSubmit}>
           <div style={{ backgroundColor: "blue" }}>
-            <input name="p1" onChange={this.handlep1change} />
+            <input name="p1" placeholder="p1" onChange={this.handlep1change} />
           </div>
           <div style={{ backgroundColor: "blue" }}>
-            <input name="p2" onChange={this.handlep2change} />
+            <input name="p2" placeholder="p2" onChange={this.handlep2change} />
           </div>
           <div style={{ backgroundColor: "blue" }}>
-            <input name="p3" onChange={this.handlep3change} />
+            <input name="p3" placeholder="p3" onChange={this.handlep3change} />
           </div>
           <div style={{ backgroundColor: "blue" }}>
-            <input name="p4" onChange={this.handlep4change} />
+            <input name="p4" placeholder="p4" onChange={this.handlep4change} />
           </div>
           <button>Next</button>
         </form>

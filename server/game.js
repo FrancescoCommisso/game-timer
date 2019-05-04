@@ -1,44 +1,58 @@
 class Game {
-  constructor() {
-    this.id = this.generateID();
-    this.players = [];
+  constructor(obj) {
+    this.id = obj.id;
+    this.players = obj.players;
     this.gameState = {
       currentPlayer: null,
       remainingTimeForTurn: null,
-      totalRuntime: null,
-      totalTurns: null
+      gameStartTime: null,
+      totalTurns: 0,
+      currentPlayerStartTime: null
     };
-  }
+    this.gameSettings = obj.gameSettings;
 
-  setID(id) {
-    this.id = id;
-  }
-  getID() {
-    return this.id;
-  }
+    this.init = function() {
+      this.gameState.currentPlayer = this.players[0];
+      this.gameSettings.time *= 60000;
+      this.gameState.remainingTimeForTurn = this.gameSettings.time;
+      this.gameState.gameStartTime = Date.now();
+      this.gameState.totalTurns = 1;
+      this.calculateTimeRemaining();
+    };
 
-  getPlayers() {
-    return this.players;
-  }
-  setPlayers(players) {
-    this.players = players;
-  }
-  getGameState() {
-    return this.gameState;
-  }
-  setGameState(gameState) {
-    this.gameState = gameState;
-  }
+    var intervalID;
 
-  generateID() {
-    var result = "";
-    var characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    var charactersLength = characters.length;
-    for (var i = 0; i < 5; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
+    this.endTurn = function() {
+      var current = this.players.indexOf(this.gameState.currentPlayer);
+      var next = (current + 1) % 4;
+      this.gameState.currentPlayer = this.players[next];
+      this.gameState.totalTurns += 1;
+      this.gameState.remainingTimeForTurn = this.gameSettings.time;
+    };
+
+    this.calculateTimeRemaining = () => {
+      intervalID = setInterval(() => {
+        this.gameState.remainingTimeForTurn -= 1000;
+        if (this.gameState.remainingTimeForTurn < 0) this.endTurn();
+      }, 1000);
+    };
+
+    this.pauseTurn = () => {
+      if (intervalID) {
+        clearInterval(intervalID);
+        intervalID = null;
+      } else {
+        this.calculateTimeRemaining();
+      }
+    };
+
+    this.restartTurn = () => {
+      this.gameState.remainingTimeForTurn = this.gameSettings.time;
+    };
+
+    // this.editSettings() = function(){
+
+    // }
   }
 }
 

@@ -4,6 +4,8 @@ import "./App.css";
 import CreateGame from "./components/CreateGame";
 import AddPlayers from "./components/AddPlayers";
 import AddSettings from "./components/AddSettings";
+import Game from "./components/Game";
+import { thisExpression } from "@babel/types";
 
 class App extends Component {
   constructor() {
@@ -11,7 +13,7 @@ class App extends Component {
     this.state = {
       id: null,
       players: null,
-      settings: null
+      gameSettings: null
     };
   }
 
@@ -24,27 +26,49 @@ class App extends Component {
     this.setState({ players: players });
   };
 
+  handleFinish = settings => {
+    this.setState({ gameSettings: settings }, () => {
+      fetch("/api/addgame", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(this.state)
+      }).then(res => {
+        if (res.status === 200) {
+          this.setState({ showState: true });
+        }
+      });
+    });
+  };
+
   render() {
     if (this.state.id === null) {
       return (
         <div>
-          <CreateGame onCreate={this.handleOnCreate} />
+          <CreateGame onCreate={this.handleOnCreate} gameID={this.state.id} />
         </div>
       );
     }
     if (this.state.players === null) {
       return (
         <div>
-          <AddPlayers onNext={this.handleNext} />
+          <AddPlayers onNext={this.handleNext} gameID={this.state.id} />
         </div>
       );
     }
-    if (this.state.settings === null) {
+    if (this.state.gameSettings === null) {
       return (
         <div>
-          <AddSettings onNext={this.handleNext} />
+          <AddSettings onNext={this.handleFinish} gameID={this.state.id} />
         </div>
       );
+    }
+    if (this.state.showState) {
+      return <div>{<Game gameID={this.state.id} />}</div>;
+    } else {
+      return <div>Ya'll shouldnt be seeing this!</div>;
     }
   }
 }
