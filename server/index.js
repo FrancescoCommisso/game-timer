@@ -10,11 +10,6 @@ app.use(pino);
 
 var games = {};
 
-// app.get("/api/creategame", (req, res) => {
-//   res.setHeader("Content-Type", "application/json");
-//   res.send(new Game().generateID());
-// });
-
 app.post("/api/addgame", (req, res) => {
   var g = new Game(req.body);
   g.init();

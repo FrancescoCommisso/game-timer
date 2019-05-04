@@ -18,12 +18,19 @@ class Game extends Component {
     })
       .then(response => response.json())
       .then(state => this.setState(state));
+    this.calcTotalTime();
+  }
 
+  calcTotalTime = () => {
     this.interval = setInterval(() => {
       var elapsed = Date.now() - this.state.gameState.startTime;
       this.setState({ totalTime: pretty(elapsed) });
     }, 1000);
-  }
+  };
+
+  //   calcRemainingTime = () => {
+
+  //   };
 
   componentWillUnmount() {
     clearInterval(this.interval);
