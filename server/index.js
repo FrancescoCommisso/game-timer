@@ -30,6 +30,6 @@ app.post("/api/input/endturn", (req, res) => {
   res.send(JSON.stringify(games[req.body.id]));
 });
 
-app.listen(3001, () =>
-  console.log("Express server is running on localhost:3001")
+app.listen(5000, () =>
+  console.log("Express server is running on localhost:5000")
 );
