@@ -6,6 +6,7 @@ class Game {
       currentPlayer: null,
       remainingTimeForTurn: null,
       gameStartTime: null,
+      paused: null,
       totalTurns: 0,
       currentPlayerStartTime: null
     };
@@ -16,6 +17,7 @@ class Game {
       this.gameSettings.time *= 60000;
       this.gameState.remainingTimeForTurn = this.gameSettings.time;
       this.gameState.gameStartTime = Date.now();
+      this.gameState.paused = false;
       this.gameState.totalTurns = 1;
       this.calculateTimeRemaining();
     };
@@ -40,19 +42,17 @@ class Game {
     this.pauseTurn = () => {
       if (intervalID) {
         clearInterval(intervalID);
-        intervalID = null;
+        this.intervalID = null;
+        // this.gameState.paused = true;
       } else {
         this.calculateTimeRemaining();
+        // this.gameState.paused = false;
       }
     };
 
     this.restartTurn = () => {
       this.gameState.remainingTimeForTurn = this.gameSettings.time;
     };
-
-    // this.editSettings() = function(){
-
-    // }
   }
 }
 

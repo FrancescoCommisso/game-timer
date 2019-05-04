@@ -6,6 +6,7 @@ import AddPlayers from "./components/AddPlayers";
 import AddSettings from "./components/AddSettings";
 import Game from "./components/Game";
 import { thisExpression } from "@babel/types";
+import FindGame from "./components/FindGame";
 
 class App extends Component {
   constructor() {
@@ -43,11 +44,21 @@ class App extends Component {
     });
   };
 
+  handleFindGame = game => {
+    console.log("handlefinegame() from App: ");
+    this.setState({ gameSettings: game.gameSettings });
+    this.setState({ players: game.players });
+    this.setState({ id: game.id });
+
+    this.setState({ showState: true });
+  };
+
   render() {
     if (this.state.id === null) {
       return (
         <div>
           <CreateGame onCreate={this.handleOnCreate} gameID={this.state.id} />
+          <FindGame handleFindGame={this.handleFindGame} />
         </div>
       );
     }
