@@ -8,6 +8,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({ extended: false }));
 app.use(pino);
 
+app.use(express.static(path.join(__dirname, "../client/build")));
+
+//production mode
+// if (process.env.NODE_ENV === "production") {
+//   app.use(express.static(path.join(__dirname, "client/build")));
+//   //
+//   app.get("*", (req, res) => {
+//     res.sendfile(path.join((__dirname = "client/build/index.html")));
+//   });
+// }
+
 var games = {};
 
 app.post("/api/addgame", (req, res) => {
