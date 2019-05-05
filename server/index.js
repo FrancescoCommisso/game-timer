@@ -41,6 +41,9 @@ app.post("/api/input/restart", (req, res) => {
   games[req.body.id].restartTurn();
   res.send(JSON.stringify(games[req.body.id]));
 });
+app.post("/api/getstate", (req, res) => {
+  res.send(JSON.stringify(games[req.body.id]));
+});
 
 app.listen(3001, () =>
   console.log("Express server is running on localhost:3001")
