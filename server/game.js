@@ -36,12 +36,12 @@ class Game {
         if (this.gameState.remainingTimeForTurn < 0) this.endTurn();
       }, 1000);
     };
-
     this.pauseTurn = () => {
       if (intervalID) {
         clearInterval(intervalID);
         intervalID = null;
       } else {
+        console.log("intervalID is  null");
         this.calculateTimeRemaining();
       }
     };
@@ -49,10 +49,6 @@ class Game {
     this.restartTurn = () => {
       this.gameState.remainingTimeForTurn = this.gameSettings.time;
     };
-
-    // this.editSettings() = function(){
-
-    // }
   }
 }
 

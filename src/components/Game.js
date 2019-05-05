@@ -81,6 +81,14 @@ class Game extends Component {
     });
   };
 
+  determinePaused = () => {
+    if (this.state.gameState.paused) {
+      return "Un-Pause";
+    } else {
+      return "Pause";
+    }
+  };
+
   render() {
     if (this.state) {
       return (
@@ -92,10 +100,9 @@ class Game extends Component {
           </h3>
           <h5>Total Time: {this.state.totalTime}</h5>
           <h5>Turn#: {this.state.gameState.totalTurns}</h5>
-          <button onClick={this.handlePause}>Pause</button>
+          <button onClick={this.handlePause}>{this.determinePaused()}</button>
           <button onClick={this.handleEndTurn}>End Turn</button>
           <button onClick={this.handleRestart}>Restart Turn</button>
-          <button>Settings</button>
         </div>
       );
     } else {
