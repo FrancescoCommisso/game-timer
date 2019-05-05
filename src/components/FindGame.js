@@ -24,13 +24,15 @@ class FindGame extends Component {
   render() {
     return (
       <div>
-        <h1>Find Game</h1>
-        <p>
-          If one of your friend's has already created a game, enter the Game-ID
-          here
-        </p>
-        <input onChange={this.handleIDChange} placeholder="XXXXX" />
-        <button onClick={this.handleJoinGame}>Join Game</button>
+        <form onSubmit={this.handleJoinGame}>
+          <h1>Find Game</h1>
+          <p>
+            If one of your friend's has already created a game, enter the
+            Game-ID here
+          </p>
+          <input onChange={this.handleIDChange} placeholder="XXXXX" />
+          <button onClick={this.handleJoinGame}>Join Game</button>
+        </form>
       </div>
     );
   }

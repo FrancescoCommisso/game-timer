@@ -39,7 +39,7 @@ class Game {
     this.pauseTurn = () => {
       if (intervalID) {
         clearInterval(intervalID);
-        this.intervalID = null;
+        intervalID = null;
       } else {
         console.log("intervalID is  null");
         this.calculateTimeRemaining();

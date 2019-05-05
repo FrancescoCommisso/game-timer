@@ -103,7 +103,6 @@ class Game extends Component {
           <button onClick={this.handlePause}>{this.determinePaused()}</button>
           <button onClick={this.handleEndTurn}>End Turn</button>
           <button onClick={this.handleRestart}>Restart Turn</button>
-          <button>Settings</button>
         </div>
       );
     } else {
