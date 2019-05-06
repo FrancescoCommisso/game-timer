@@ -1,5 +1,10 @@
 import React, { Component } from "react";
 const pretty = require("pretty-ms");
+const Sound = require("react-sound").default;
+const missileSound = require("../assets/missile.mp3");
+const finishSound = require("../assets/foghorn.mp3");
+const bell = require("../assets/bell.mp3");
+const chirp = require("../assets/chirp.mp3");
 
 class Game extends Component {
   constructor() {
@@ -7,6 +12,8 @@ class Game extends Component {
   }
 
   componentDidMount() {
+    console.log("url: " + missileSound);
+
     fetch("/api/game", {
       method: "POST",
       headers: {
@@ -89,10 +96,19 @@ class Game extends Component {
     }
   };
 
+  playsound = () => {
+    if (this.state.gameState.remainingTimeForTurn < 1) {
+      return Sound.status.PLAYING;
+    } else {
+      return Sound.status.STOPPED;
+    }
+  };
+
   render() {
     if (this.state) {
       return (
         <div>
+          <Sound url={chirp} playbackRate={4} playStatus={this.playsound()} />
           <h1>{this.state.id}</h1>
           <h2>{this.state.gameState.currentPlayer}'s Turn</h2>
           <h3>

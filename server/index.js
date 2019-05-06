@@ -26,7 +26,18 @@ app.get("/api/games", (req, res) => {
 });
 
 app.post("/api/game", (req, res) => {
-  res.send(JSON.stringify(games[req.body.id]));
+  console.log(
+    "checking if " +
+      JSON.stringify(games) +
+      " has " +
+      JSON.stringify(games[req.body.id].id)
+  );
+
+  if (games.hasOwnProperty(games[req.body.id].id)) {
+    res.send(JSON.stringify(games[req.body.id]));
+  } else {
+    res.sendStatus(404);
+  }
 });
 
 app.post("/api/input/endturn", (req, res) => {

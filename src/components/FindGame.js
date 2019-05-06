@@ -8,7 +8,8 @@ class FindGame extends Component {
   handleIDChange = e => {
     this.setState({ id: e.target.value.trim() });
   };
-  handleJoinGame = () => {
+  handleJoinGame = e => {
+    e.preventDefault();
     fetch("/api/game", {
       method: "POST",
       headers: {
@@ -16,10 +17,14 @@ class FindGame extends Component {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({ id: this.state.id })
-    })
-      .then(response => response.json())
-      .then(state => this.setState(state));
-    this.props.handleFindGame(this.state);
+    }).then(response => {
+      if (response.status == 200) {
+        this.setState(response.json());
+        this.props.handleFindGame(this.state);
+      } else {
+        this.setState({ error: "Invalid Game-ID" });
+      }
+    });
   };
   render() {
     return (
