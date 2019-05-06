@@ -3,6 +3,7 @@ class Game {
     this.id = obj.id;
     this.players = obj.players;
     this.gameState = {
+      paused: null,
       currentPlayer: null,
       remainingTimeForTurn: null,
       gameStartTime: null,
@@ -17,6 +18,7 @@ class Game {
       this.gameState.remainingTimeForTurn = this.gameSettings.time;
       this.gameState.gameStartTime = Date.now();
       this.gameState.totalTurns = 1;
+      this.gameState.paused = false;
       this.calculateTimeRemaining();
     };
 
@@ -28,6 +30,10 @@ class Game {
       this.gameState.currentPlayer = this.players[next];
       this.gameState.totalTurns += 1;
       this.gameState.remainingTimeForTurn = this.gameSettings.time;
+
+      if (this.gameSettings.autoStart == false) {
+        this.pauseTurn();
+      }
     };
 
     this.calculateTimeRemaining = () => {
@@ -40,9 +46,10 @@ class Game {
       if (intervalID) {
         clearInterval(intervalID);
         intervalID = null;
+        this.gameState.paused = true;
       } else {
-        console.log("intervalID is  null");
         this.calculateTimeRemaining();
+        this.gameState.paused = false;
       }
     };
 
